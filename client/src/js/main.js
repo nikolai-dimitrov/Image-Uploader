@@ -1,16 +1,19 @@
 const imageForm = document.getElementById("imageForm");
 const imageInput = document.querySelector("#imageForm input");
 const submitBtn = document.querySelector("#imageForm button");
+
+const imageContainerElement = document.querySelector(".imagePreview");
 const imageElement = document.querySelector(".imagePreview img");
 
 const showImagePreview = (file) => {
-	// TODO: Display block class to div image container
+	imageContainerElement.classList.replace("hideImage", "showImage");
+
 	const img = URL.createObjectURL(file);
 	imageElement.src = img;
 };
 
 const clearImagePreview = () => {
-	// TODO: Display none class to div image container
+	imageContainerElement.classList.replace("showImage", "hideImage");
 	imageElement.src = "";
 };
 
@@ -27,7 +30,7 @@ const handleImageInputChange = (e) => {
 
 	// Show image preview before size validation to show the user  which image cannot upload for more clarity.
 	showImagePreview(file);
-    
+
 	if (file.size > Math.pow(1024, 2) * 2) {
 		alert("Cannot upload this file size is over 2MB.");
 		submitBtn.disabled = true;
