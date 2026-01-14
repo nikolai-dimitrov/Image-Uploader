@@ -1,0 +1,21 @@
+@import url("./reset.css");
+
+.imagePreview {
+    width: 100px;
+    height: 100px;
+}
+
+.imagePreview img {
+    width: 100%;
+    height: 100%;
+    /* object-fit: contain; */
+    border-radius: 15px;
+}
+
+.hideImage {
+    display: none;
+}
+
+.showImage {
+    display: block;
+}
