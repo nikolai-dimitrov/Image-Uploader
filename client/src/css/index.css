@@ -64,6 +64,9 @@ body {
 	width: 100%;
 	height: 100%;
 	border-radius: 10px;
+	/* display: none; */
+	position: relative;
+	z-index: 3;
 }
 
 /* Actions */
@@ -86,4 +89,12 @@ body {
 	border: unset;
 	padding: 8px 0px 8px 0px;
 	cursor: pointer;
+}
+
+.hidden {
+	display: none;
+}
+
+.visible {
+	display: block;
 }
