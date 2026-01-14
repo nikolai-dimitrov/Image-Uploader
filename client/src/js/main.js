@@ -1,30 +1,28 @@
-const imageForm = document.getElementById("imageForm");
-const imageInput = document.querySelector("#imageForm input");
-const submitBtn = document.querySelector("#imageForm button");
+const dropZoneDivElement = document.querySelector(".dropZone");
+const uploadIconContainerElement = document.querySelector(
+	".dropZone .iconContainer"
+);
+const inputImageElement = document.querySelector(".dropZone input");
+const imagePreviewElement = document.querySelector(".dropZone .imagePreview");
+const imageElement = document.querySelector(".dropZone .imagePreview img");
 
-const imageContainerElement = document.querySelector(".imagePreview");
-const imageElement = document.querySelector(".imagePreview img");
+const uploadBtn = document.querySelector(".actionsContainer .uploadBtn");
+const removeBtn = document.querySelector(".actionsContainer .removeBtn");
 
 const showImagePreview = (file) => {
-	imageContainerElement.classList.replace("hideImage", "showImage");
-
+	imageElement.classList.replace("hidden", "visible");
 	const img = URL.createObjectURL(file);
 	imageElement.src = img;
 };
 
-const clearImagePreview = () => {
-	imageContainerElement.classList.replace("showImage", "hideImage");
+const closeImagePreview = () => {
 	imageElement.src = "";
+	imageElement.classList.replace("visible", "hidden");
+	inputImageElement.value = "";
 };
 
-const handleImageInputChange = (e) => {
-	const file = imageInput.files[0];
-
+const processImageFile = (file) => {
 	if (!file) {
-		clearImagePreview();
-		// Enable upload button in case previously chosen image was more than 2MB and instead of the user choosing another image, he just closes the window.
-		// Prevents upload button remain disabled when image is canceled.
-		submitBtn.disabled = false;
 		return;
 	}
 
@@ -33,11 +31,30 @@ const handleImageInputChange = (e) => {
 
 	if (file.size > Math.pow(1024, 2) * 2) {
 		alert("Cannot upload this file size is over 2MB.");
-		submitBtn.disabled = true;
+		uploadBtn.disabled = true;
 		return;
 	}
 
-	submitBtn.disabled = false;
+	uploadBtn.disabled = false;
 };
 
-imageInput.addEventListener("change", handleImageInputChange);
+const removeImageBtnHandler = () => {
+	closeImagePreview();
+
+	// Enable upload btn in case of last image in preview was with more than 2MB size.
+	if (uploadBtn.disabled == true) {
+		uploadBtn.disabled = false;
+	}
+};
+
+const handleImageChange = (e) => {
+	const file = e.target.files[0];
+	processImageFile(file);
+};
+
+uploadIconContainerElement.addEventListener("click", () =>
+	inputImageElement.click()
+);
+
+inputImageElement.addEventListener("change", handleImageChange);
+removeBtn.addEventListener("click", removeImageBtnHandler);
