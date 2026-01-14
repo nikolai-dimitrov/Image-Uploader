@@ -4,20 +4,37 @@
 		<meta charset="UTF-8" />
 		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <script src="./src/js/main.js" type="module" defer></script>
-        <link rel="stylesheet" href="./src/css/index.css">
+		<script
+			src="https://kit.fontawesome.com/4820eb40be.js"
+			crossorigin="anonymous"
+		></script>
+		<script src="./src/js/main.js" type="module" defer></script>
+		<link rel="stylesheet" href="./src/css/index.css" />
 
 		<title>Image Uploader</title>
 	</head>
 	<body>
-        <form id="imageForm" action="">
-            <input type="file"
-            accept="image/*"
-            >
-            <button>Upload</button>
-        </form>
-        <div class="imagePreview hideImage">
-            <img src="" alt="">
-        </div>
-    </body>
+		<section id="imageUploader">
+			<div class="dropZone">
+				<input type="file" accept="image/*" />
+				<div class="informationContainer">
+					<div class="iconContainer">
+						<i class="fa-solid fa-upload"></i>
+					</div>
+					<p>Drop file here or click the button above</p>
+				</div>
+				<div class="imagePreview">
+					<!-- <img
+						src="https://images.pexels.com/photos/853168/pexels-photo-853168.jpeg"
+						alt=""
+					/> -->
+				</div>
+			</div>
+            <div class="actionsContainer">
+                <div class="progressBar"></div>
+                <button class="uploadBtn">Upload</button>
+                <button class="removeBtn">Remove</button>
+            </div>
+		</section>
+	</body>
 </html>

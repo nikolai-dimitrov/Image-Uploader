@@ -1,21 +1,89 @@
 @import url("./reset.css");
 
-.imagePreview {
-    width: 100px;
-    height: 100px;
+body {
+	background-color: #dfe2e8;
 }
 
-.imagePreview img {
-    width: 100%;
-    height: 100%;
-    /* object-fit: contain; */
-    border-radius: 15px;
+#imageUploader {
+	height: 330px;
+	width: 400px;
+	background-color: #fff;
+	border-radius: 10px;
+	margin: 30px auto;
+	padding: 20px;
 }
 
-.hideImage {
-    display: none;
+.dropZone {
+	width: 100%;
+	height: 150px;
+	margin-bottom: 30px;
+	border: 2px dotted #bfc0c3;
+	border-radius: 10px;
+	position: relative;
 }
 
-.showImage {
-    display: block;
+.dropZone input {
+	display: none;
+}
+
+.dropZone .informationContainer {
+	width: 100%;
+	position: absolute;
+	top: 50%;
+	transform: translateY(-50%);
+}
+
+.dropZone .informationContainer .iconContainer {
+	width: 50px;
+	height: 50px;
+	margin-bottom: 15px;
+	background-color: #bfc0c3;
+	border-radius: 50%;
+	position: relative;
+	left: 50%;
+	transform: translateX(-50%);
+}
+
+.dropZone .informationContainer .iconContainer i {
+	position: relative;
+	left: 50%;
+	top: 50%;
+	transform: translate(-50%, -50%);
+}
+
+.dropZone .informationContainer p {
+	text-align: center;
+}
+
+.dropZone .imagePreview {
+	width: 100%;
+	height: 100%;
+}
+
+.dropZone .imagePreview img {
+	width: 100%;
+	height: 100%;
+	border-radius: 10px;
+}
+
+/* Actions */
+.actionsContainer {
+	display: flex;
+	flex-direction: column;
+	gap: 10px;
+}
+
+.actionsContainer .progressBar {
+	width: 100%;
+	height: 31px;
+	background-color: greenyellow;
+	border-radius: 5px;
+	visibility: hidden;
+}
+
+.actionsContainer button {
+	border-radius: 5px;
+	border: unset;
+	padding: 8px 0px 8px 0px;
+	cursor: pointer;
 }
