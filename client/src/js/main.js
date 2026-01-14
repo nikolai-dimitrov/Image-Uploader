@@ -1,3 +1,5 @@
+import { dragDropImage } from "./dragDropImage.js";
+
 const dropZoneDivElement = document.querySelector(".dropZone");
 const uploadIconContainerElement = document.querySelector(
 	".dropZone .iconContainer"
@@ -9,13 +11,21 @@ const imageElement = document.querySelector(".dropZone .imagePreview img");
 const uploadBtn = document.querySelector(".actionsContainer .uploadBtn");
 const removeBtn = document.querySelector(".actionsContainer .removeBtn");
 
+dragDropImage();
+
 const showImagePreview = (file) => {
+	imagePreviewElement.classList.add("inPreview");
+
 	imageElement.classList.replace("hidden", "visible");
 	const img = URL.createObjectURL(file);
 	imageElement.src = img;
 };
 
 const closeImagePreview = () => {
+	if (imagePreviewElement.classList.contains("inPreview")) {
+		imagePreviewElement.classList.remove("inPreview");
+	}
+
 	imageElement.src = "";
 	imageElement.classList.replace("visible", "hidden");
 	inputImageElement.value = "";

@@ -98,3 +98,8 @@ body {
 .visible {
 	display: block;
 }
+
+.inPreview {
+    position: relative;
+    background-color: #fff;
+}
