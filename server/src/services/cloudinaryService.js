@@ -1,7 +1,7 @@
 const cloudinary = require("cloudinary");
 
 exports.generateSignature = async () => {
-	const timestamp = new Date().getTime();
+	const timestamp = Math.round((new Date().getTime()) / 1000);
 	const signature = await cloudinary.utils.api_sign_request(
 		{
 			timestamp,
