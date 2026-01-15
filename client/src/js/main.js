@@ -1,5 +1,5 @@
 import { initDragDropImage } from "./dragDropImage.js";
-// import { processImageFile } from "./upload.js";
+import { processImageFile } from "./upload.js";
 import { validateImageSize, validateFileType } from "./validators.js";
 
 const dropZoneDivElement = document.querySelector(".dropZone");
@@ -13,6 +13,9 @@ const imageElement = document.querySelector(".dropZone .imagePreview img");
 const uploadBtn = document.querySelector(".actionsContainer .uploadBtn");
 const removeBtn = document.querySelector(".actionsContainer .removeBtn");
 
+const fileState = {
+	file: null,
+};
 const setSelectedImage = (file) => {
 	if (!file) {
 		return;
@@ -36,7 +39,7 @@ const setSelectedImage = (file) => {
 		return;
 	}
 
-	// processImageFile(file);
+	fileState["file"] = file;
 };
 
 export const showImagePreview = (file) => {
@@ -58,9 +61,13 @@ const closeImagePreview = () => {
 	// After a image is selected and removed, the same photo cannot be selected again without clearing the input value.
 	inputImageElement.value = "";
 };
-
+const uploadBtnClickHandler = () => {
+	const file = fileState["file"];
+	processImageFile(file);
+};
 const removeImageBtnHandler = () => {
 	closeImagePreview();
+	fileState["file"] = null;
 
 	// Enable upload btn in case of last image in preview was with more than 2MB size.
 	if (uploadBtn.disabled == true) {
@@ -80,4 +87,5 @@ uploadIconContainerElement.addEventListener("click", () =>
 initDragDropImage(setSelectedImage, dropZoneDivElement);
 
 inputImageElement.addEventListener("change", imageChangeHandler);
+uploadBtn.addEventListener("click", uploadBtnClickHandler);
 removeBtn.addEventListener("click", removeImageBtnHandler);
