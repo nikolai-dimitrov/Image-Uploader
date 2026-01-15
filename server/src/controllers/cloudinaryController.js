@@ -3,11 +3,14 @@ const cloudinaryService = require("../services/cloudinaryService");
 
 router.get("/generate-signature", async (req, res) => {
 	try {
-		const signatureData = await cloudinaryService.generateSignature();
+		const { timestamp, signature } =
+			await cloudinaryService.generateSignature();
 
 		res.status(200).json({
-			status: "success",
-			data: signatureData,
+			signature: signature,
+			timestamp: timestamp,
+			apiKey: process.env.CLOUDINARY_KEY,
+			cloudName: process.env.CLOUDINARY_CLOUD_NAME,
 		});
 	} catch (error) {
 		// TODO: Implement error handling
