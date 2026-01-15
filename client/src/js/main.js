@@ -1,4 +1,6 @@
-import { dragDropImage } from "./dragDropImage.js";
+import { initDragDropImage } from "./dragDropImage.js";
+// import { processImageFile } from "./upload.js";
+import { validateImageSize, validateFileType } from "./validators.js";
 
 const dropZoneDivElement = document.querySelector(".dropZone");
 const uploadIconContainerElement = document.querySelector(
@@ -11,9 +13,33 @@ const imageElement = document.querySelector(".dropZone .imagePreview img");
 const uploadBtn = document.querySelector(".actionsContainer .uploadBtn");
 const removeBtn = document.querySelector(".actionsContainer .removeBtn");
 
-dragDropImage();
+const setSelectedImage = (file) => {
+	if (!file) {
+		return;
+	}
 
-const showImagePreview = (file) => {
+	const [isTypeValid, typeErrorMsg] = validateFileType(file, "image");
+
+	if (!isTypeValid) {
+		alert(typeErrorMsg);
+		return;
+	}
+
+	// Show image preview before size validation to show the user  which image cannot upload for more clarity.
+	showImagePreview(file);
+
+	const [isSizeValid, sizeErrorMsg] = validateImageSize(file, 4);
+
+	if (!isSizeValid) {
+		uploadBtn.disabled = true;
+		alert(sizeErrorMsg);
+		return;
+	}
+
+	// processImageFile(file);
+};
+
+export const showImagePreview = (file) => {
 	imagePreviewElement.classList.add("inPreview");
 
 	imageElement.classList.replace("hidden", "visible");
@@ -28,24 +54,9 @@ const closeImagePreview = () => {
 
 	imageElement.src = "";
 	imageElement.classList.replace("visible", "hidden");
+
+	// After a image is selected and removed, the same photo cannot be selected again without clearing the input value.
 	inputImageElement.value = "";
-};
-
-const processImageFile = (file) => {
-	if (!file) {
-		return;
-	}
-
-	// Show image preview before size validation to show the user  which image cannot upload for more clarity.
-	showImagePreview(file);
-
-	if (file.size > Math.pow(1024, 2) * 2) {
-		alert("Cannot upload this file size is over 2MB.");
-		uploadBtn.disabled = true;
-		return;
-	}
-
-	uploadBtn.disabled = false;
 };
 
 const removeImageBtnHandler = () => {
@@ -57,14 +68,16 @@ const removeImageBtnHandler = () => {
 	}
 };
 
-const handleImageChange = (e) => {
+const imageChangeHandler = (e) => {
 	const file = e.target.files[0];
-	processImageFile(file);
+	setSelectedImage(file);
 };
 
 uploadIconContainerElement.addEventListener("click", () =>
 	inputImageElement.click()
 );
 
-inputImageElement.addEventListener("change", handleImageChange);
+initDragDropImage(setSelectedImage, dropZoneDivElement);
+
+inputImageElement.addEventListener("change", imageChangeHandler);
 removeBtn.addEventListener("click", removeImageBtnHandler);
