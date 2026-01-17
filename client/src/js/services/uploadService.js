@@ -11,11 +11,12 @@ const upload = (url, formData, progressBarController) => {
 	});
 
 	xhr.upload.addEventListener("progress", (e) => {
-		progressBarController.fill();
+		const percentLoaded = (e.loaded / e.total) * 100;
+		progressBarController.fill(percentLoaded);
 	});
 
 	xhr.upload.addEventListener("loadend", (e) => {
-		// progressBarController.hide();
+		progressBarController.hide();
 	});
 
 	xhr.upload.addEventListener("error", (e) => {
@@ -49,6 +50,4 @@ export const processImageFile = async (file, progressBarController) => {
 	} catch (error) {
 		console.log(error.message);
 	}
-
-	// Upload file into cloudinary
 };
