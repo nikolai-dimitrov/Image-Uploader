@@ -1,5 +1,5 @@
 import { initDragDropImage } from "./dragDropImage.js";
-import { processImageFile } from "./upload.js";
+import { processImageFile } from "./services/uploadService.js";
 import { validateImageSize, validateFileType } from "./validators.js";
 
 const dropZoneDivElement = document.querySelector(".dropZone");
@@ -10,12 +10,17 @@ const inputImageElement = document.querySelector(".dropZone input");
 const imagePreviewElement = document.querySelector(".dropZone .imagePreview");
 const imageElement = document.querySelector(".dropZone .imagePreview img");
 
+const progressBarElement = document.querySelector(
+	".actionsContainer .progressBar"
+);
+
 const uploadBtn = document.querySelector(".actionsContainer .uploadBtn");
 const removeBtn = document.querySelector(".actionsContainer .removeBtn");
 
 const fileState = {
 	file: null,
 };
+
 const setSelectedImage = (file) => {
 	if (!file) {
 		return;
@@ -42,6 +47,11 @@ const setSelectedImage = (file) => {
 	fileState["file"] = file;
 };
 
+const imageChangeHandler = (e) => {
+	const file = e.target.files[0];
+	setSelectedImage(file);
+};
+
 export const showImagePreview = (file) => {
 	imagePreviewElement.classList.add("inPreview");
 
@@ -61,10 +71,7 @@ const closeImagePreview = () => {
 	// After a image is selected and removed, the same photo cannot be selected again without clearing the input value.
 	inputImageElement.value = "";
 };
-const uploadBtnClickHandler = () => {
-	const file = fileState["file"];
-	processImageFile(file);
-};
+
 const removeImageBtnHandler = () => {
 	closeImagePreview();
 	fileState["file"] = null;
@@ -74,10 +81,28 @@ const removeImageBtnHandler = () => {
 		uploadBtn.disabled = false;
 	}
 };
+const showProgressBar = () => {
+	progressBarElement.classList.replace("hidden", "visible");
+	progressBarElement.value = 0;
+};
 
-const imageChangeHandler = (e) => {
-	const file = e.target.files[0];
-	setSelectedImage(file);
+const fillProgressBar = () => {
+	//
+};
+
+const hideProgressBar = () => {
+	setTimeout(() => {
+		progressBarElement.classList.replace("visible", "hidden");
+	}, 3000);
+};
+
+const uploadBtnClickHandler = () => {
+	const file = fileState["file"];
+	processImageFile(file, {
+		show: showProgressBar,
+		fill: fillProgressBar,
+		hide: hideProgressBar,
+	});
 };
 
 uploadIconContainerElement.addEventListener("click", () =>
