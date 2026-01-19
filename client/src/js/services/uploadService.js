@@ -1,37 +1,43 @@
 import { signImage } from "./backendService.js";
 
-// process image -> sign and invoke upload function
 const upload = (url, formData, progressBarController) => {
-	const xhr = new XMLHttpRequest();
+	return new Promise((resolve, reject) => {
+		const xhr = new XMLHttpRequest();
 
-	xhr.open("POST", url);
+		xhr.open("POST", url);
 
-	xhr.upload.addEventListener("loadstart", (e) => {
-		progressBarController.show();
+		xhr.upload.addEventListener("loadstart", (e) => {
+			progressBarController.show();
+		});
+
+		xhr.upload.addEventListener("progress", (e) => {
+			const percentLoaded = (e.loaded / e.total) * 100;
+			progressBarController.fill(percentLoaded);
+		});
+
+		xhr.upload.addEventListener("loadend", (e) => {
+			progressBarController.hide();
+		});
+
+		xhr.upload.addEventListener("error", (e) => {
+			reject(new Error("A problem occurred while uploading. Try again."));
+		});
+
+		xhr.addEventListener("load", () => {
+			if (xhr.status >= 200 && xhr.status <= 300) {
+				const response = JSON.parse(xhr.response);
+				resolve(response);
+			} else {
+				reject(new Error("Uploading failed. Try again. "));
+			}
+		});
+
+		xhr.addEventListener("error", (e) => {
+			reject(new Error("There was a problem connecting to the server."));
+		});
+
+		xhr.send(formData);
 	});
-
-	xhr.upload.addEventListener("progress", (e) => {
-		const percentLoaded = (e.loaded / e.total) * 100;
-		progressBarController.fill(percentLoaded);
-	});
-
-	xhr.upload.addEventListener("loadend", (e) => {
-		progressBarController.hide();
-	});
-
-	xhr.upload.addEventListener("error", (e) => {
-		// handle upload related errors
-	});
-
-	xhr.addEventListener("load", () => {
-		// 	// handle request related errors
-		// Invoke showError fn if status < 200 or > 300
-		// Invoke showSuccess fn for successfully update
-		console.log(xhr.status);
-	});
-
-	// implement xhr.error 
-	xhr.send(formData);
 };
 
 export const processImageFile = async (file, progressBarController) => {
@@ -47,8 +53,9 @@ export const processImageFile = async (file, progressBarController) => {
 		formData.append("signature", data.signature);
 		formData.append("folder", data.folderName);
 
-		upload(url, formData, progressBarController);
+		const response = await upload(url, formData, progressBarController);
+		return response
 	} catch (error) {
-		throw error
+		throw error;
 	}
 };

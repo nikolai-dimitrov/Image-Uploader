@@ -98,24 +98,23 @@ const hideProgressBar = () => {
 };
 
 const uploadBtnClickHandler = async () => {
+	const file = fileState["file"];
+	if (file == null) {
+		alert("Please chose image file to upload.");
+		return;
+	}
+
 	try {
-		const file = fileState["file"];
-		await processImageFile(file, {
+		const { url, original_filename } = await processImageFile(file, {
 			show: showProgressBar,
 			fill: fillProgressBar,
 			hide: hideProgressBar,
 		});
-		// if (file) {
-		// 	processImageFile(file, {
-		// 		show: showProgressBar,
-		// 		fill: fillProgressBar,
-		// 		hide: hideProgressBar,
-		// 	});
-		// } else {
-		// 	alert("Please chose image file to upload.");
-		// }
+
+		// Invoke showSuccessFn
 	} catch (error) {
-		console.log(error.message, "error");
+		// Invoke showErrorFn
+		console.log(error.message);
 	}
 };
 
