@@ -1,13 +1,13 @@
 import { signImage } from "./backendService.js";
 
-const upload = (url, formData, fileState, progressBarController) => {
+const upload = (url, formData, progressBarController, setIsUploading) => {
 	return new Promise((resolve, reject) => {
 		const xhr = new XMLHttpRequest();
 
 		xhr.open("POST", url);
 
 		xhr.upload.addEventListener("loadstart", (e) => {
-			fileState.isUploading = true;
+			setIsUploading(true);
 			progressBarController.show();
 		});
 
@@ -17,7 +17,7 @@ const upload = (url, formData, fileState, progressBarController) => {
 		});
 
 		xhr.upload.addEventListener("loadend", (e) => {
-			fileState.isUploading = false;
+			setIsUploading(false);
 			progressBarController.hide();
 		});
 
@@ -42,7 +42,11 @@ const upload = (url, formData, fileState, progressBarController) => {
 	});
 };
 
-export const processImageFile = async (fileState, progressBarController) => {
+export const processImageFile = async (
+	fileState,
+	progressBarController,
+	setIsUploading
+) => {
 	try {
 		const data = await signImage();
 		const url = `http://api.cloudinary.com/v1_1/${data.cloudName}/image/upload`;
@@ -58,8 +62,8 @@ export const processImageFile = async (fileState, progressBarController) => {
 		const response = await upload(
 			url,
 			formData,
-			fileState,
-			progressBarController
+			progressBarController,
+			setIsUploading
 		);
 		return response;
 	} catch (error) {

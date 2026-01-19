@@ -11,6 +11,8 @@ const inputImageElement = document.querySelector(".dropZone input");
 const imagePreviewElement = document.querySelector(".dropZone .imagePreview");
 const imageElement = document.querySelector(".dropZone .imagePreview img");
 
+const messageParagraph = document.querySelector(".informationContainer p");
+
 const progressBarElement = document.querySelector(
 	".actionsContainer .progressBar"
 );
@@ -84,7 +86,9 @@ const removeImageBtnHandler = () => {
 		uploadBtn.disabled = false;
 	}
 };
-
+const setIsUploading = (isUploading) => {
+	fileState.isUploading = isUploading;
+};
 const uploadBtnClickHandler = async () => {
 	const file = fileState["file"];
 	if (file == null) {
@@ -93,13 +97,14 @@ const uploadBtnClickHandler = async () => {
 	}
 
 	try {
-		// if (fileState.isUploading) {
-		// 	return;
-		// }
+		if (fileState.isUploading) {
+			return;
+		}
 
 		const { url, original_filename } = await processImageFile(
 			fileState,
-			progressBarController
+			progressBarController,
+			setIsUploading
 		);
 		console.log(fileState.isUploading);
 		// Invoke showSuccessFn
