@@ -4,15 +4,14 @@ export const signImage = async () => {
 			"http://localhost:3000/cloudinary/generate-signature"
 		);
 
-		if (!response.ok) {
-			throw new Error(`Response status: ${response.status}`);
-		}
-
 		const data = await response.json();
+
+		if (!response.ok) {
+			throw new Error(data.message);
+		}
 
 		return data;
 	} catch (error) {
-        // TODO: Implement error handling and fallback ui
-		console.log(error.message);
+		throw error
 	}
 };

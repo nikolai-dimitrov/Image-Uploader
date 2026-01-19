@@ -87,28 +87,36 @@ const showProgressBar = () => {
 };
 
 const fillProgressBar = (percentLoaded) => {
-	progressBarElement.value = percentLoaded
+	progressBarElement.value = percentLoaded;
 };
 
 const hideProgressBar = () => {
 	setTimeout(() => {
 		progressBarElement.classList.replace("visible", "hidden");
-		progressBarElement.value = 0
+		progressBarElement.value = 0;
 	}, 3000);
 };
 
-const uploadBtnClickHandler = () => {
-	const file = fileState["file"];
-	if(file) {
-		processImageFile(file, {
+const uploadBtnClickHandler = async () => {
+	try {
+		const file = fileState["file"];
+		await processImageFile(file, {
 			show: showProgressBar,
 			fill: fillProgressBar,
 			hide: hideProgressBar,
 		});
-	}else {
-		alert("Please chose image file to upload.")
+		// if (file) {
+		// 	processImageFile(file, {
+		// 		show: showProgressBar,
+		// 		fill: fillProgressBar,
+		// 		hide: hideProgressBar,
+		// 	});
+		// } else {
+		// 	alert("Please chose image file to upload.");
+		// }
+	} catch (error) {
+		console.log(error.message, "error");
 	}
-
 };
 
 uploadIconContainerElement.addEventListener("click", () =>

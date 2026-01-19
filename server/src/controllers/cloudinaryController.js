@@ -14,8 +14,10 @@ router.get("/generate-signature", async (req, res) => {
 			folderName: folderName,
 		});
 	} catch (error) {
-		// TODO: Implement error handling
-		console.log(error.message);
+		return res.status(500).json({
+			message:
+				"Error occurred while preparing for upload. Try again later.",
+		});
 	}
 });
 

@@ -30,6 +30,7 @@ const upload = (url, formData, progressBarController) => {
 		console.log(xhr.status);
 	});
 
+	// implement xhr.error 
 	xhr.send(formData);
 };
 
@@ -48,6 +49,6 @@ export const processImageFile = async (file, progressBarController) => {
 
 		upload(url, formData, progressBarController);
 	} catch (error) {
-		console.log(error.message);
+		throw error
 	}
 };
