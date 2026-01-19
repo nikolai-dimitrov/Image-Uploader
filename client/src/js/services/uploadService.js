@@ -1,12 +1,13 @@
 import { signImage } from "./backendService.js";
 
-const upload = (url, formData, progressBarController) => {
+const upload = (url, formData, fileState, progressBarController) => {
 	return new Promise((resolve, reject) => {
 		const xhr = new XMLHttpRequest();
 
 		xhr.open("POST", url);
 
 		xhr.upload.addEventListener("loadstart", (e) => {
+			fileState.isUploading = true;
 			progressBarController.show();
 		});
 
@@ -16,6 +17,7 @@ const upload = (url, formData, progressBarController) => {
 		});
 
 		xhr.upload.addEventListener("loadend", (e) => {
+			fileState.isUploading = false;
 			progressBarController.hide();
 		});
 
@@ -40,21 +42,26 @@ const upload = (url, formData, progressBarController) => {
 	});
 };
 
-export const processImageFile = async (file, progressBarController) => {
+export const processImageFile = async (fileState, progressBarController) => {
 	try {
 		const data = await signImage();
 		const url = `http://api.cloudinary.com/v1_1/${data.cloudName}/image/upload`;
 		const formData = new FormData();
 
 		// TODO: Use for loop
-		formData.append("file", file);
+		formData.append("file", fileState.file);
 		formData.append("api_key", data.apiKey);
 		formData.append("timestamp", data.timestamp);
 		formData.append("signature", data.signature);
 		formData.append("folder", data.folderName);
 
-		const response = await upload(url, formData, progressBarController);
-		return response
+		const response = await upload(
+			url,
+			formData,
+			fileState,
+			progressBarController
+		);
+		return response;
 	} catch (error) {
 		throw error;
 	}

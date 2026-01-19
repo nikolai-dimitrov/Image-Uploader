@@ -1,6 +1,7 @@
 import { initDragDropImage } from "./dragDropImage.js";
 import { processImageFile } from "./services/uploadService.js";
 import { validateImageSize, validateFileType } from "./validators.js";
+import { initProgressBarController } from "./utilsUi.js";
 
 const dropZoneDivElement = document.querySelector(".dropZone");
 const uploadIconContainerElement = document.querySelector(
@@ -19,8 +20,10 @@ const removeBtn = document.querySelector(".actionsContainer .removeBtn");
 
 const fileState = {
 	file: null,
+	isUploading: false,
 };
 
+const progressBarController = initProgressBarController(progressBarElement);
 const setSelectedImage = (file) => {
 	if (!file) {
 		return;
@@ -81,21 +84,6 @@ const removeImageBtnHandler = () => {
 		uploadBtn.disabled = false;
 	}
 };
-const showProgressBar = () => {
-	progressBarElement.classList.replace("hidden", "visible");
-	progressBarElement.value = 0;
-};
-
-const fillProgressBar = (percentLoaded) => {
-	progressBarElement.value = percentLoaded;
-};
-
-const hideProgressBar = () => {
-	setTimeout(() => {
-		progressBarElement.classList.replace("visible", "hidden");
-		progressBarElement.value = 0;
-	}, 3000);
-};
 
 const uploadBtnClickHandler = async () => {
 	const file = fileState["file"];
@@ -105,12 +93,15 @@ const uploadBtnClickHandler = async () => {
 	}
 
 	try {
-		const { url, original_filename } = await processImageFile(file, {
-			show: showProgressBar,
-			fill: fillProgressBar,
-			hide: hideProgressBar,
-		});
+		// if (fileState.isUploading) {
+		// 	return;
+		// }
 
+		const { url, original_filename } = await processImageFile(
+			fileState,
+			progressBarController
+		);
+		console.log(fileState.isUploading);
 		// Invoke showSuccessFn
 	} catch (error) {
 		// Invoke showErrorFn
