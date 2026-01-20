@@ -109,6 +109,7 @@ const uploadBtnClickHandler = async () => {
 		);
 
 		showSuccessMessage(messageParagraphElement, imageUrlElement, url);
+		closeImagePreview();
 	} catch (error) {
 		// Invoke showErrorFn
 		console.log(error.message);
