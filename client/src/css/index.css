@@ -5,7 +5,7 @@ body {
 }
 
 #imageUploader {
-	height: 330px;
+	min-height: 330px;
 	width: 400px;
 	background-color: #fff;
 	border-radius: 10px;
@@ -66,6 +66,12 @@ body {
 	border-radius: 10px;
 	position: relative;
 	z-index: 3;
+}
+/* Message Container */
+
+.messageContainer a {
+	display: block;
+	overflow: hidden;
 }
 
 /* Actions */
