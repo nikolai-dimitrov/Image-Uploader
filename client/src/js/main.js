@@ -1,7 +1,11 @@
 import { initDragDropImage } from "./dragDropImage.js";
 import { processImageFile } from "./services/uploadService.js";
 import { validateImageSize, validateFileType } from "./validators.js";
-import { createProgressBarController, showSuccessMessage } from "./utilsUi.js";
+import {
+	createProgressBarController,
+	showSuccessMessage,
+	clearFeedback,
+} from "./utilsUi.js";
 
 const dropZoneDivElement = document.querySelector(".dropZone");
 const uploadIconContainerElement = document.querySelector(
@@ -28,6 +32,9 @@ const fileState = {
 
 const progressBarController = createProgressBarController(progressBarElement);
 const setSelectedImage = (file) => {
+	// Clear feedback in case of successfully uploaded image and than user want to put other image in preview.
+	clearFeedback(messageParagraphElement, imageUrlElement);
+
 	if (!file) {
 		return;
 	}
@@ -80,6 +87,8 @@ const closeImagePreview = () => {
 
 const removeImageBtnHandler = () => {
 	closeImagePreview();
+	// Clear feedback in case of error and user have to remove the image file.
+	clearFeedback(messageParagraphElement, imageUrlElement);
 	fileState["file"] = null;
 
 	// Enable upload btn in case of last image in preview was with more than 2MB size.

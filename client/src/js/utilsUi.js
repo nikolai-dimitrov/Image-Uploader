@@ -28,3 +28,12 @@ export const showSuccessMessage = (paragraphEl, anchorEl, url) => {
 export const showErrorMessage = () => {
 	//
 };
+
+export const clearFeedback = (paragraphEl, anchorEl) => {
+	paragraphEl.textContent = "";
+
+	anchorEl.removeAttribute("href");
+	anchorEl.textContent = "";
+
+	paragraphEl.classList.replace("visible", "hidden");
+};
