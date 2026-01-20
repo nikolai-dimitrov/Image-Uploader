@@ -8,14 +8,23 @@ export const initProgressBarController = (progressBarElement) => {
 		fill: (percentLoaded) => {
 			progressBarElement.value = percentLoaded;
 		},
-        
+
 		hide: () => {
-			setTimeout(() => {
-				progressBarElement.classList.replace("visible", "hidden");
-				progressBarElement.value = 0;
-			}, 3000);
+			progressBarElement.classList.replace("visible", "hidden");
+			progressBarElement.value = 0;
 		},
 	};
 };
 
+export const showSuccessMessage = (paragraphEl, anchorEl, url) => {
+	paragraphEl.textContent = "Image is uploaded successfully!";
 
+	anchorEl.href = url;
+	anchorEl.textContent = url;
+
+	paragraphEl.classList.replace("hidden", "visible");
+};
+
+export const showErrorMessage = () => {
+	//
+};

@@ -1,7 +1,7 @@
 import { initDragDropImage } from "./dragDropImage.js";
 import { processImageFile } from "./services/uploadService.js";
 import { validateImageSize, validateFileType } from "./validators.js";
-import { initProgressBarController } from "./utilsUi.js";
+import { initProgressBarController, showSuccessMessage } from "./utilsUi.js";
 
 const dropZoneDivElement = document.querySelector(".dropZone");
 const uploadIconContainerElement = document.querySelector(
@@ -11,7 +11,8 @@ const inputImageElement = document.querySelector(".dropZone input");
 const imagePreviewElement = document.querySelector(".dropZone .imagePreview");
 const imageElement = document.querySelector(".dropZone .imagePreview img");
 
-const messageParagraph = document.querySelector(".informationContainer p");
+const messageParagraphElement = document.querySelector(".messageContainer p");
+const imageUrlElement = document.querySelector(".messageContainer a");
 
 const progressBarElement = document.querySelector(
 	".actionsContainer .progressBar"
@@ -101,13 +102,13 @@ const uploadBtnClickHandler = async () => {
 			return;
 		}
 
-		const { url, original_filename } = await processImageFile(
+		const { url } = await processImageFile(
 			fileState,
 			progressBarController,
 			setIsUploading
 		);
-		console.log(fileState.isUploading);
-		// Invoke showSuccessFn
+
+		showSuccessMessage(messageParagraphElement, imageUrlElement, url);
 	} catch (error) {
 		// Invoke showErrorFn
 		console.log(error.message);

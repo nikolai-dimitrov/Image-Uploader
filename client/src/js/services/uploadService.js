@@ -18,7 +18,6 @@ const upload = (url, formData, progressBarController, setIsUploading) => {
 
 		xhr.upload.addEventListener("loadend", (e) => {
 			setIsUploading(false);
-			progressBarController.hide();
 		});
 
 		xhr.upload.addEventListener("error", (e) => {
@@ -27,8 +26,15 @@ const upload = (url, formData, progressBarController, setIsUploading) => {
 
 		xhr.addEventListener("load", () => {
 			if (xhr.status >= 200 && xhr.status <= 300) {
-				const response = JSON.parse(xhr.response);
-				resolve(response);
+				timeoutId = setTimeout(
+					() => {
+						progressBarController.hide();
+						const response = JSON.parse(xhr.response);
+						resolve(response);
+					},
+
+					1500
+				);
 			} else {
 				reject(new Error("Uploading failed. Try again. "));
 			}
