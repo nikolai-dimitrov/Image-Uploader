@@ -1,4 +1,4 @@
-export const initProgressBarController = (progressBarElement) => {
+export const createProgressBarController = (progressBarElement) => {
 	return {
 		show: () => {
 			progressBarElement.classList.replace("hidden", "visible");

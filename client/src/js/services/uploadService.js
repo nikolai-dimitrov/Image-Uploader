@@ -26,7 +26,7 @@ const upload = (url, formData, progressBarController, setIsUploading) => {
 
 		xhr.addEventListener("load", () => {
 			if (xhr.status >= 200 && xhr.status <= 300) {
-				timeoutId = setTimeout(
+				setTimeout(
 					() => {
 						progressBarController.hide();
 						const response = JSON.parse(xhr.response);

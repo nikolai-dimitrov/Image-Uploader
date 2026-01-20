@@ -1,7 +1,7 @@
 import { initDragDropImage } from "./dragDropImage.js";
 import { processImageFile } from "./services/uploadService.js";
 import { validateImageSize, validateFileType } from "./validators.js";
-import { initProgressBarController, showSuccessMessage } from "./utilsUi.js";
+import { createProgressBarController, showSuccessMessage } from "./utilsUi.js";
 
 const dropZoneDivElement = document.querySelector(".dropZone");
 const uploadIconContainerElement = document.querySelector(
@@ -26,7 +26,7 @@ const fileState = {
 	isUploading: false,
 };
 
-const progressBarController = initProgressBarController(progressBarElement);
+const progressBarController = createProgressBarController(progressBarElement);
 const setSelectedImage = (file) => {
 	if (!file) {
 		return;
