@@ -4,6 +4,7 @@ import { validateImageSize, validateFileType } from "./validators.js";
 import {
 	createProgressBarController,
 	showSuccessMessage,
+	showErrorMessage,
 	clearFeedback,
 } from "./utilsUi.js";
 
@@ -28,6 +29,7 @@ const removeBtn = document.querySelector(".actionsContainer .removeBtn");
 const fileState = {
 	file: null,
 	isUploading: false,
+	isServerError: false,
 };
 
 const progressBarController = createProgressBarController(progressBarElement);
@@ -86,12 +88,15 @@ const closeImagePreview = () => {
 };
 
 const removeImageBtnHandler = () => {
+	if (fileState.isServerError) {
+		clearFeedback(messageParagraphElement, imageUrlElement);
+		fileState["isServerError"] = false;
+	}
+
 	closeImagePreview();
-	// Clear feedback in case of error and user have to remove the image file.
-	clearFeedback(messageParagraphElement, imageUrlElement);
 	fileState["file"] = null;
 
-	// Enable upload btn in case of last image in preview was with more than 2MB size.
+	// Enable upload btn in case of last image in preview was more than allowed MB.
 	if (uploadBtn.disabled == true) {
 		uploadBtn.disabled = false;
 	}
@@ -99,6 +104,7 @@ const removeImageBtnHandler = () => {
 const setIsUploading = (isUploading) => {
 	fileState.isUploading = isUploading;
 };
+
 const uploadBtnClickHandler = async () => {
 	const file = fileState["file"];
 	if (file == null) {
@@ -110,7 +116,6 @@ const uploadBtnClickHandler = async () => {
 		if (fileState.isUploading) {
 			return;
 		}
-
 		const { url } = await processImageFile(
 			fileState,
 			progressBarController,
@@ -119,9 +124,10 @@ const uploadBtnClickHandler = async () => {
 
 		showSuccessMessage(messageParagraphElement, imageUrlElement, url);
 		closeImagePreview();
+		fileState["file"] = null;
 	} catch (error) {
-		// Invoke showErrorFn
-		console.log(error.message);
+		fileState["isServerError"] = true;
+		showErrorMessage(messageParagraphElement, error.message);
 	}
 };
 
