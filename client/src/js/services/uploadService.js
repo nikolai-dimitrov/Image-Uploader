@@ -20,6 +20,7 @@ const upload = (url, formData, progressBarController, setIsUploading) => {
 			setIsUploading(false);
 		});
 
+		// Handle upload errors
 		xhr.upload.addEventListener("error", (e) => {
 			reject(new Error("A problem occurred while uploading. Try again."));
 		});
@@ -35,11 +36,12 @@ const upload = (url, formData, progressBarController, setIsUploading) => {
 
 					1500
 				);
+				// Handle http error response -> bad status codes
 			} else {
 				reject(new Error("Uploading failed. Try again. "));
 			}
 		});
-
+		// Handle network / cors errors
 		xhr.addEventListener("error", (e) => {
 			reject(new Error("There was a problem connecting to the server."));
 		});
