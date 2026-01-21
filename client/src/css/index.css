@@ -67,7 +67,12 @@ body {
 	position: relative;
 	z-index: 3;
 }
+
 /* Message Container */
+.messageContainer {
+	text-align: center;
+	font-size: 15px;
+}
 
 .messageContainer a {
 	display: block;
@@ -108,4 +113,8 @@ body {
 
 .dragover {
 	background-color: #dfe2e8;
+}
+
+.error {
+	color: red;
 }
