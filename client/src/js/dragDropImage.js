@@ -25,5 +25,3 @@ export const initDragDropImage = (setSelectedImage, dropZoneElement) => {
 		dropZoneElement.addEventListener(eventName, callbackFn);
 	}
 };
-
-console.log("init");
