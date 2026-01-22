@@ -1,19 +1,19 @@
-export const initDragDropImage = (setSelectedImage, dropZoneElement) => {
+export const initDragDropImage = (setSelectedImage, dropZone) => {
 	const eventHandlers = {
 		dragenter: (e) => {
 			e.preventDefault();
 		},
 		dragover: (e) => {
 			e.preventDefault();
-			dropZoneElement.classList.add("dragover");
+			dropZone.classList.add("dragover");
 		},
 		dragleave: (e) => {
 			e.preventDefault();
-			dropZoneElement.classList.remove("dragover");
+			dropZone.classList.remove("dragover");
 		},
 		drop: (e) => {
 			e.preventDefault();
-			dropZoneElement.classList.remove("dragover");
+			dropZone.classList.remove("dragover");
 			const file = e.dataTransfer.files[0];
 
 			setSelectedImage(file);
@@ -22,6 +22,6 @@ export const initDragDropImage = (setSelectedImage, dropZoneElement) => {
 
 	for (const eventName in eventHandlers) {
 		const callbackFn = eventHandlers[eventName];
-		dropZoneElement.addEventListener(eventName, callbackFn);
+		dropZone.addEventListener(eventName, callbackFn);
 	}
 };

@@ -17,7 +17,7 @@ const fileState = {
 
 const setSelectedImage = (file) => {
 	// Clear feedback message when user put image in preview
-	clearFeedback(dom.messageParagraphElement, dom.imageUrlElement);
+	clearFeedback(dom.feedbackMessage, dom.feedbackLink);
 
 	if (!file) {
 		return;
@@ -50,28 +50,28 @@ const imageChangeHandler = (e) => {
 };
 
 export const showImagePreview = (file) => {
-	dom.imagePreviewElement.classList.add("inPreview");
+	dom.previewContainer.classList.add("inPreview");
 
-	dom.imageElement.classList.replace("hidden", "visible");
+	dom.imagePreview.classList.replace("hidden", "visible");
 	const img = URL.createObjectURL(file);
-	dom.imageElement.src = img;
+	dom.imagePreview.src = img;
 };
 
 const closeImagePreview = () => {
-	if (dom.imagePreviewElement.classList.contains("inPreview")) {
-		dom.imagePreviewElement.classList.remove("inPreview");
+	if (dom.previewContainer.classList.contains("inPreview")) {
+		dom.previewContainer.classList.remove("inPreview");
 	}
 
-	dom.imageElement.src = "";
-	dom.imageElement.classList.replace("visible", "hidden");
+	dom.imagePreview.src = "";
+	dom.imagePreview.classList.replace("visible", "hidden");
 
 	// After a image is selected and removed, the same photo cannot be selected again without resetting the input value.
-	dom.inputImageElement.value = "";
+	dom.imageInput.value = "";
 };
 
 const removeImageBtnHandler = () => {
 	if (fileState.isServerError) {
-		clearFeedback(dom.messageParagraphElement, dom.imageUrlElement);
+		clearFeedback(dom.feedbackMessage, dom.feedbackLink);
 		fileState["isServerError"] = false;
 	}
 
@@ -105,27 +105,27 @@ const uploadBtnClickHandler = async () => {
 		);
 
 		showSuccessMessage(
-			dom.messageParagraphElement,
-			dom.imageUrlElement,
+			dom.feedbackMessage,
+			dom.feedbackLink,
 			url
 		);
 		closeImagePreview();
 		fileState["file"] = null;
 	} catch (error) {
 		fileState["isServerError"] = true;
-		showErrorMessage(dom.messageParagraphElement, error.message);
+		showErrorMessage(dom.feedbackMessage, error.message);
 	}
 };
 
-dom.uploadIconContainerElement.addEventListener("click", () =>
-	dom.inputImageElement.click()
+dom.uploadIconContainer.addEventListener("click", () =>
+	dom.imageInput.click()
 );
 
-initDragDropImage(setSelectedImage, dom.dropZoneDivElement);
+initDragDropImage(setSelectedImage, dom.dropZone);
 const progressBarController = createProgressBarController(
-	dom.progressBarElement
+	dom.progressBar
 );
 
-dom.inputImageElement.addEventListener("change", imageChangeHandler);
+dom.imageInput.addEventListener("change", imageChangeHandler);
 dom.uploadBtn.addEventListener("click", uploadBtnClickHandler);
 dom.removeBtn.addEventListener("click", removeImageBtnHandler);

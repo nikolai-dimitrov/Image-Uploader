@@ -1,46 +1,46 @@
-export const createProgressBarController = (progressBarElement) => {
+export const createProgressBarController = (progressBar) => {
 	return {
 		show: () => {
-			progressBarElement.classList.replace("hidden", "visible");
-			progressBarElement.value = 0;
+			progressBar.classList.replace("hidden", "visible");
+			progressBar.value = 0;
 		},
 
 		fill: (percentLoaded) => {
-			progressBarElement.value = percentLoaded;
+			progressBar.value = percentLoaded;
 		},
 
 		hide: () => {
-			progressBarElement.classList.replace("visible", "hidden");
-			progressBarElement.value = 0;
+			progressBar.classList.replace("visible", "hidden");
+			progressBar.value = 0;
 		},
 	};
 };
 
-export const showSuccessMessage = (paragraphEl, anchorEl, url) => {
-	paragraphEl.textContent = "Image is uploaded successfully!";
+export const showSuccessMessage = (feedbackMessage, feedbackLink, url) => {
+	feedbackMessage.textContent = "Image is uploaded successfully!";
 
-	anchorEl.href = url;
-	anchorEl.textContent = url;
+	feedbackLink.href = url;
+	feedbackLink.textContent = url;
 
-	paragraphEl.classList.replace("hidden", "visible");
+	feedbackMessage.classList.replace("hidden", "visible");
 };
 
-export const showErrorMessage = (paragraphEl, errorMessage) => {
-	paragraphEl.textContent = errorMessage;
-	paragraphEl.classList.add("error");
+export const showErrorMessage = (feedbackMessage, errorMessage) => {
+	feedbackMessage.textContent = errorMessage;
+	feedbackMessage.classList.add("error");
 
-	paragraphEl.classList.replace("hidden", "visible");
+	feedbackMessage.classList.replace("hidden", "visible");
 };
 
-export const clearFeedback = (paragraphEl, anchorEl) => {
-	paragraphEl.textContent = "";
+export const clearFeedback = (feedbackMessage, feedbackLink) => {
+	feedbackMessage.textContent = "";
 	
-	if (paragraphEl.classList.contains("error")) {
-		paragraphEl.classList.remove("error");
+	if (feedbackMessage.classList.contains("error")) {
+		feedbackMessage.classList.remove("error");
 	}
 
-	anchorEl.removeAttribute("href");
-	anchorEl.textContent = "";
+	feedbackLink.removeAttribute("href");
+	feedbackLink.textContent = "";
 
-	paragraphEl.classList.replace("visible", "hidden");
+	feedbackMessage.classList.replace("visible", "hidden");
 };

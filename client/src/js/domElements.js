@@ -1,14 +1,14 @@
 export const dom = {
-	dropZoneDivElement: document.querySelector(".dropZone"),
-	uploadIconContainerElement: document.querySelector(
+	dropZone: document.querySelector(".dropZone"),
+	uploadIconContainer: document.querySelector(
 		".dropZone .iconContainer"
 	),
-	inputImageElement: document.querySelector(".dropZone input"),
-	imagePreviewElement: document.querySelector(".dropZone .imagePreview"),
-	imageElement: document.querySelector(".dropZone .imagePreview img"),
-	messageParagraphElement: document.querySelector(".messageContainer p"),
-	imageUrlElement: document.querySelector(".messageContainer a"),
-	progressBarElement: document.querySelector(
+	imageInput: document.querySelector(".dropZone input"),
+	previewContainer: document.querySelector(".dropZone .imagePreview"),
+	imagePreview: document.querySelector(".dropZone .imagePreview img"),
+	feedbackMessage: document.querySelector(".messageContainer p"),
+	feedbackLink: document.querySelector(".messageContainer a"),
+	progressBar: document.querySelector(
 		".actionsContainer .progressBar"
 	),
 	uploadBtn: document.querySelector(".actionsContainer .uploadBtn"),
